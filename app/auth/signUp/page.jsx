@@ -2,37 +2,50 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { supabase } from '@/lib/supabase/client';
 export default function SignUpPage() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // const [confirmPassword, setConfirmPassword] = useState('');
 
   // Placeholder handlers (no actual logic)
-  const handleEmailSignUp = (e) => {
+  const handleEmailSignUp = async (e) => {
     e.preventDefault();
-    console.log('Email sign up clicked');
+    
+
+        const { data, error } = await supabase.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      emailRedirectTo: `${location.origin}/dashboard`,
+    },
+  })
   };
 
-  const handleGoogleSignUp = () => {
-    console.log('Google sign up clicked');
+  const handleGoogleSignUp =async () => {
+   await supabase.auth.signInWithOAuth({
+ provider: "google",
+  options: {
+    redirectTo: `${location.origin}/dashboard`,
+  },
+})
   };
 
   return (
     <div className="min-h-screen bg-[#f7f3ee] overflow-hidden relative">
       {/* Decorative Background Blobs */}
-      <div className="absolute top-20 right-10 w-96 h-96 bg-gradient-to-br from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 left-10 w-80 h-80 bg-gradient-to-tr from-[#f0dfd4]/30 to-[#d4ad98]/20 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
-      <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-bl from-[#e8c8b5]/15 to-transparent rounded-full blur-2xl" />
+      <div className="absolute top-20 right-10 w-96 h-96 bg-linear-to-br from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 left-10 w-80 h-80 bg-linear-to-tr from-[#f0dfd4]/30 to-[#d4ad98]/20 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
+      <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-linear-to-bl from-[#e8c8b5]/15 to-transparent rounded-full blur-2xl" />
 
       {/* Main Container */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-6xl mx-auto">
           
           {/* Two Column Layout */}
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-linear">
             
             {/* Left Section - Hero Content */}
             <div className="space-y-6 text-center md:text-left order-2 md:order-1">
@@ -109,10 +122,10 @@ export default function SignUpPage() {
                 {/* Sign Up Form */}
                 <form onSubmit={handleEmailSignUp} className="space-y-4">
                   {/* Name Input */}
-                  {/* <div>
+                  <div>
                     <label 
                       htmlFor="name" 
-                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                      className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Full Name
                     </label>
@@ -122,16 +135,16 @@ export default function SignUpPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="John Doe"
-                      className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#d4ad98]/50 focus:border-[#d4ad98] transition-all duration-300 outline-none text-gray-800 placeholder:text-gray-400"
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#d4ad98]/50 focus:border-[#d4ad98] transition-all duration-300 outline-none text-gray-800 placeholder:text-gray-400"
                       required
                     />
-                  </div> */}
+                  </div>
 
                   {/* Email Input */}
                   <div>
                     <label 
                       htmlFor="email" 
-                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                      className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Email Address
                     </label>
@@ -141,7 +154,7 @@ export default function SignUpPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="your.email@example.com"
-                      className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#d4ad98]/50 focus:border-[#d4ad98] transition-all duration-300 outline-none text-gray-800 placeholder:text-gray-400"
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#d4ad98]/50 focus:border-[#d4ad98] transition-all duration-300 outline-none text-gray-800 placeholder:text-gray-400"
                       required
                     />
                   </div>
@@ -150,7 +163,7 @@ export default function SignUpPage() {
                   <div>
                     <label 
                       htmlFor="password" 
-                      className="block text-sm font-medium text-gray-700 mb-1.5"
+                      className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Password
                     </label>
@@ -160,7 +173,7 @@ export default function SignUpPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Create a strong password"
-                      className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#d4ad98]/50 focus:border-[#d4ad98] transition-all duration-300 outline-none text-gray-800 placeholder:text-gray-400"
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#d4ad98]/50 focus:border-[#d4ad98] transition-all duration-300 outline-none text-gray-800 placeholder:text-gray-400"
                       required
                     />
                   </div>
@@ -207,14 +220,14 @@ export default function SignUpPage() {
                   {/* Sign Up Button */}
                   <button
                     type="submit"
-                    className="w-full bg-[#d4ad98] text-white py-2.5 rounded-lg font-semibold shadow-lg shadow-[#d4ad98]/30 hover:shadow-xl hover:shadow-[#d4ad98]/40 hover:scale-[1.02] hover:bg-[#c99d87] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#d4ad98]/30"
+                    className="w-full bg-[#d4ad98] text-white py-2 rounded-lg font-semibold shadow-lg shadow-[#d4ad98]/30 hover:shadow-xl hover:shadow-[#d4ad98]/40 hover:scale-[1.02] hover:bg-[#c99d87] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#d4ad98]/30"
                   >
                     Create Account
                   </button>
                 </form>
 
                 {/* Divider */}
-                <div className="relative my-6">
+                <div className="relative my-3">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-300"></div>
                   </div>
@@ -228,7 +241,7 @@ export default function SignUpPage() {
                 {/* Google Sign Up Button */}
                 <button
                   onClick={handleGoogleSignUp}
-                  className="w-full bg-white border-2 border-gray-300 text-gray-700 py-2.5 rounded-lg font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] hover:bg-gray-50 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-200 flex items-center justify-center gap-3"
+                  className="w-full bg-white border-2 border-gray-300 text-gray-700 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] hover:bg-gray-50 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-200 flex items-center justify-center gap-3"
                 >
                   {/* Google Icon */}
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -253,7 +266,7 @@ export default function SignUpPage() {
                 </button>
 
                 {/* Login Link */}
-                <div className="mt-6 text-center">
+                <div className="mt-3 text-center">
                   <p className="text-sm text-gray-600">
                     Already have an account?{' '}
                     <button

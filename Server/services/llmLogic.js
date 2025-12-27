@@ -8,7 +8,7 @@ if (!process.env.GROQ_API_KEY) {
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY
 })
-// console.log("✅ GROQ KEY LOADED:", process.env.GROQ_API_KEY.slice(0, 5) + "...")
+
 
 export const chatCompletion =async(Usermessage)=>
    {

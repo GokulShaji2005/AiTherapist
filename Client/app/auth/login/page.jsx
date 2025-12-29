@@ -11,7 +11,23 @@ export default function LoginPage() {
 
   // Placeholder handlers (no actual logic)
   const handleEmailLogin = async (e) => {
-   
+  e.preventDefault();
+      
+  
+          const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+      
+    })
+    
+    
+    if(error){
+      alert(error.message);
+      return;
+  
+    }
+    router.push(`${location.origin}/ui/chat`);
+
     } 
 
   
@@ -22,7 +38,7 @@ export default function LoginPage() {
  provider: "google",
   options: {
 
-    redirectTo: `${location.origin}/ui`,
+    redirectTo: `${location.origin}/ui/chat`,
   },
 
 })
@@ -171,6 +187,7 @@ if(error)throw error;
                   <button
                     type="submit"
                     className="w-full bg-[#d4ad98] text-white py-2.5 rounded-lg font-semibold shadow-lg shadow-[#d4ad98]/30 hover:shadow-xl hover:shadow-[#d4ad98]/40 hover:scale-[1.02] hover:bg-[#c99d87] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#d4ad98]/30"
+                  onClick={handleEmailLogin}
                   >
                     Sign In
                   </button>

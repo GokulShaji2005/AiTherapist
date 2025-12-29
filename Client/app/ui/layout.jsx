@@ -19,36 +19,43 @@ import { supabase } from '@/lib/supabase/client';
  * 
  * @param {Object} props
  * @param {React.ReactNode} props.children - Main content to render
- */
-export default function AppLayout({ children }) {
-   useEffect(()=>{
-   const getToken= async()=>{
+//  */
+// export default function AppLayout({ children }) {
+//    useEffect(()=>{
+//    const getToken= async()=>{
   
-  const {data}=await supabase.auth.getSession();
-  const accessToken=data.session?.access_token;
-await fetch("http://localhost:4000/api/chat/userMessage", {
-  method: "POST",
-  headers: {
+//   const {data}=await supabase.auth.getSession();
+//   const accessToken=data.session?.access_token;
+// await fetch("http://localhost:4000/api/chat/userMessage", {
+//   method: "POST",
+//   headers: {
     
-    Authorization: `Bearer ${accessToken}`,
-     "Content-Type": "application/json",
+//     Authorization: `Bearer ${accessToken}`,
+//      "Content-Type": "application/json",
    
-  },
-  body: JSON.stringify({ message: "Hello AI" }),
-});
+//   },
+//   body: JSON.stringify({ message: "Hello AI" }),
+// });
  
 
-  }
+//   }
   
-getToken();
-},[])
+// getToken();
+// },[])
+
+
+
+export default function AppLayout({ children }) {
+ 
+
+
 
   return (
     <div className="min-h-screen bg-[#f7f3ee] overflow-hidden relative">
       {/* Decorative Background Blobs - matching HeroSection */}
-      <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
-      <div className="absolute bottom-40 left-10 w-96 h-96 bg-gradient-to-tr from-[#f0dfd4]/30 to-[#d4ad98]/20 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
-      <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-bl from-[#e8c8b5]/15 to-transparent rounded-full blur-2xl" />
+      <div className="absolute top-20 right-10 w-72 h-72 bg-linear-to-br from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
+      <div className="absolute bottom-40 left-10 w-96 h-96 bg-linear-to-tr from-[#f0dfd4]/30 to-[#d4ad98]/20 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
+      <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-linear-to-bl from-[#e8c8b5]/15 to-transparent rounded-full blur-2xl" />
 
       {/* Desktop Sidebar - Hidden on mobile */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col z-40">

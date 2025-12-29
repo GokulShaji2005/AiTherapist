@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
+
 export default function SignUpPage() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   // const [confirmPassword, setConfirmPassword] = useState('');
 
   // Placeholder handlers (no actual logic)
@@ -22,6 +24,12 @@ export default function SignUpPage() {
       emailRedirectTo: `${location.origin}/dashboard`,
     },
   })
+
+  if(error){
+    alert(error.message);
+
+  }
+  router.push('/auth/checkEmail');
   };
 
   const handleGoogleSignUp =async () => {
@@ -122,7 +130,7 @@ export default function SignUpPage() {
                 {/* Sign Up Form */}
                 <form onSubmit={handleEmailSignUp} className="space-y-4">
                   {/* Name Input */}
-                  <div>
+                  {/* <div>
                     <label 
                       htmlFor="name" 
                       className="block text-sm font-medium text-gray-700 mb-1"
@@ -138,7 +146,7 @@ export default function SignUpPage() {
                       className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#d4ad98]/50 focus:border-[#d4ad98] transition-all duration-300 outline-none text-gray-800 placeholder:text-gray-400"
                       required
                     />
-                  </div>
+                  </div> */}
 
                   {/* Email Input */}
                   <div>

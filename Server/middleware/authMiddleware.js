@@ -28,8 +28,9 @@ export const authMiddleware=async(req,res,next)=>{
 //   };
 try{  
 req.user = {
-    id: "mock-user-123",
-    email: "test@example.com",
+    id: 
+    // "67682ec2-180e-4965-ab30-8818b695b7d8"
+    "67682ec2-180e-4965-ab30-8818b695b7d8"
   };
  
 

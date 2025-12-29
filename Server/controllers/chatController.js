@@ -116,54 +116,48 @@ import { supabaseAdmin } from "../supabase.js";
 
 export const sendMessage = async (req, res, next) => {
   try {
-    // const userid = req.user.id;
-    const userid = crypto.randomUUID();
-    let { message, sessionid } = req.body;
+    const userId = req.user.id;
+    const { message, sessionid } = req.body;
 
-    // 1️⃣ Create session if missing
     if (!sessionid) {
-      sessionid = crypto.randomUUID();
-
-      const { error } = await supabaseAdmin
-        .from("chat_sessions")
-        .insert({
-          id: sessionid,
-          user_id: userid,
-          title: "New Chat"
-        });
-
-      if (error) {
-        console.error("Session insert error:", error);
-        return res.status(500).json({ error: "Failed to create session" });
-      }
+      return res.status(400).json({ error: "sessionId is required" });
     }
 
-    const redisKey = `chat:${userid}:${sessionid}`;
+    const redisKey = `chat:${userId}:${sessionid}`;
 
-    // 2️⃣ Store user message in Redis
+    // 1️⃣ Redis cache
     await client.rPush(
       redisKey,
       JSON.stringify({
         role: "user",
         content: message,
-        timestamp: Date.now(),
+        timestamp: Date.now()
       })
     );
 
-    // 3️⃣ Store user message in DB
-    const { error: msgError } = await supabaseAdmin
-      .from("chat_messages")
-      .insert({
-        session_id: sessionid,
-        role: "user",
-        content: message
-      });
+    // 2️⃣ DB insert (source of truth)
+    // await supabaseAdmin
+    //   .from("chat_messages")
+    //   .insert({
+    //     session_id: sessionid,
+    //     // user_id: userId,
+    //     role: "user",
+    //     content: message
+    //   });
+const { error } = await supabaseAdmin
+  .from("chat_messages")
+  .insert({
+    session_id: sessionid,
+    role: "user",
+    content: message
+  });
 
-    if (msgError) {
-      console.error("Message insert error:", msgError);
-    }
+if (error) {
+  console.error("DB insert error (user):", error);
+}
 
-    // 4️⃣ AI reply
+
+    // 3️⃣ AI response
     const reply = await chatCompletion(message);
 
     await client.rPush(
@@ -171,23 +165,39 @@ export const sendMessage = async (req, res, next) => {
       JSON.stringify({
         role: "system",
         content: reply,
-        timestamp: Date.now(),
+        timestamp: Date.now()
       })
     );
 
-    await client.expire(redisKey, 60 * 60); // 1 hour
+    // await supabaseAdmin
+    //   .from("chat_messages")
+    //   .insert({
+    //     session_id: sessionid,
+    //     // user_id: userId,
+    //     role: "system",
+    //     content: reply
+    //   });
 
-    await supabaseAdmin
-      .from("chat_messages")
-      .insert({
-        session_id: sessionid,
-        role: "system",
-        content: reply
-      });
 
-    res.json({ reply, sessionid });
+    const { error: sysError } = await supabaseAdmin
+  .from("chat_messages")
+  .insert({
+    session_id: sessionid,
+    role: "system",
+    content: reply
+  });
+
+if (sysError) {
+  console.error("DB insert error (system):", sysError);
+}
+
+
+    res.json({ reply });
 
   } catch (err) {
     next(err);
   }
 };
+
+
+

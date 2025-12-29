@@ -4,7 +4,7 @@ import client from './cache/redis.js';
 import router from './routes/chatRoutes.js';
 import { authMiddleware } from './middleware/authMiddleware.js';
 import cors from "cors";
-
+import dbRouter from './routes/dbRoutes.js';
 
 const app = express()
 const port = 4000
@@ -12,6 +12,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use("/api/chat",authMiddleware,router);
+app.use("/api/db",authMiddleware,dbRouter);
 
 // const res = await fetch('http://localhost:3000/api/chat/userMessage', {
 //   method: 'POST',

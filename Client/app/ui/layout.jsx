@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import signOut from '@/lib/auth/signOut';
 import { supabase } from '@/lib/supabase/client';
+import { setAuthToken } from '@/lib/api';
 /**
  * AppLayout Component
  * 
@@ -20,33 +21,24 @@ import { supabase } from '@/lib/supabase/client';
  * @param {Object} props
  * @param {React.ReactNode} props.children - Main content to render
 //  */
-// export default function AppLayout({ children }) {
-//    useEffect(()=>{
-//    const getToken= async()=>{
-  
-//   const {data}=await supabase.auth.getSession();
-//   const accessToken=data.session?.access_token;
-// await fetch("http://localhost:4000/api/chat/userMessage", {
-//   method: "POST",
-//   headers: {
-    
-//     Authorization: `Bearer ${accessToken}`,
-//      "Content-Type": "application/json",
-   
-//   },
-//   body: JSON.stringify({ message: "Hello AI" }),
-// });
- 
 
-//   }
-  
-// getToken();
-// },[])
 
 
 
 export default function AppLayout({ children }) {
- 
+ useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setAuthToken(data.session?.access_token);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setAuthToken(session?.access_token);
+      }
+    );
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
 
 
 

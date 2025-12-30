@@ -1,7 +1,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import { Send } from 'lucide-react'
-
+import { createNewSession } from '@/api/chatApi'
 /**
  * ChatPage Component
  * 
@@ -35,11 +35,26 @@ export default function ChatPage() {
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const[sessionid,setSessionId]=useState('');
 
   // Auto-scroll to latest message
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
+
+useEffect(()=>{
+  // const {data}=await createNewSession();
+  const starChat=async()=>{
+    const {data,error}=await createNewSession();
+    if(error){
+     return console.log("error in sessionCreation")
+    }
+    console.log(data.sessionid);
+    setSessionId(data.sessionid)
+  }
+
+  starChat();
+})
 
   useEffect(() => {
     scrollToBottom()
@@ -52,25 +67,26 @@ export default function ChatPage() {
     if (inputValue.trim() === '') return
 
     const newMessage = {
-      id: messages.length + 1,
-      text: inputValue,
-      sender: 'user',
-      timestamp: new Date()
+      // id: messages.length + 1,
+      messages: inputValue,
+      sessionid
+      // sender: 'user',
+      // timestamp: new Date()
     }
 
     setMessages([...messages, newMessage])
     setInputValue('')
 
     // Simulate AI response after a short delay
-    setTimeout(() => {
-      const aiResponse = {
-        id: messages.length + 2,
-        text: "Thank you for sharing that with me. I'm here to help you work through these feelings.",
-        sender: 'ai',
-        timestamp: new Date()
-      }
-      setMessages(prev => [...prev, aiResponse])
-    }, 1000)
+    // setTimeout(() => {
+    //   const aiResponse = {
+    //     id: messages.length + 2,
+    //     text: "Thank you for sharing that with me. I'm here to help you work through these feelings.",
+    //     sender: 'ai',
+    //     timestamp: new Date()
+    //   }
+    //   setMessages(prev => [...prev, aiResponse])
+    // }, 1000)
   }
 
   // Handle Enter key

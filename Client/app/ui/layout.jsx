@@ -1,5 +1,5 @@
 'use client'
-import {React,useEffect} from 'react';
+import {React,useEffect, useState} from 'react';
 import {
   MessageCircle,
   Calendar,
@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import signOut from '@/lib/auth/signOut';
 import { supabase } from '@/lib/supabase/client';
-import { setAuthToken } from '@/lib/api';
+// import { setAuthToken } from '@/lib/api';
 /**
  * AppLayout Component
  * 
@@ -26,20 +26,32 @@ import { setAuthToken } from '@/lib/api';
 
 
 export default function AppLayout({ children }) {
- useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setAuthToken(data.session?.access_token);
-    });
+  const [user,setUser]=useState(null);
+//  useEffect(() => {
+//     supabase.auth.getSession().then(({ data }) => {
+//       setAuthToken(data.session?.access_token);
+//     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange(
+//     const { data: listener } = supabase.auth.onAuthStateChange(
+//       (_event, session) => {
+//         setAuthToken(session?.access_token);
+//       }
+//     );
+
+//     return () => listener.subscription.unsubscribe();
+//   }, []);
+useEffect(()=>{
+  supabase.auth.getUser().then(({data}) =>{
+    setUser(data?.user ?? null);
+  });
+   const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setAuthToken(session?.access_token);
+        setUser(session?.user ?? null);
       }
     );
 
     return () => listener.subscription.unsubscribe();
-  }, []);
-
+},[]);
 
 
   return (
@@ -50,7 +62,7 @@ export default function AppLayout({ children }) {
       <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-linear-to-bl from-[#e8c8b5]/15 to-transparent rounded-full blur-2xl" />
 
       {/* Desktop Sidebar - Hidden on mobile */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col z-40">
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-60 lg:flex-col z-40">
         <div className="flex flex-col flex-grow bg-white/90 backdrop-blur-sm border-r border-gray-200 shadow-lg">
           {/* Sidebar Header - Brand */}
           <div className="flex items-center gap-3 px-6 py-6 border-b border-gray-200">
@@ -78,7 +90,7 @@ export default function AppLayout({ children }) {
           </div>
 
           {/* Navigation Menu */}
-          <nav className="flex-1 px-4 py-6 space-y-2">
+          <nav className="flex-1 px-4 py-4 space-y-1">
             {/* Chat - Active State */}
             <a
               href="#"
@@ -214,7 +226,7 @@ export default function AppLayout({ children }) {
       </div>
 
       {/* Main Content Area */}
-      <div className="lg:pl-64">
+      <div className="lg:pl-60">
         {/* Top Header */}
         <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-md shadow-black/5">
           <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
@@ -252,14 +264,14 @@ export default function AppLayout({ children }) {
                 {/* Avatar */}
                 <div className="relative">
                   <div className="w-9 h-9 rounded-full bg-[#d4ad98] flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                    JD
+                    
                   </div>
                   <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-white rounded-full" />
                 </div>
 
                 {/* User Name - Hidden on small mobile */}
                 <div className="hidden sm:block">
-                  <p className="text-sm font-semibold text-gray-800">John Doe</p>
+                  <p className="text-sm font-semibold text-gray-800">{user?.user_metada?.full_name || user?.email.split("@")[0]}</p>
                   <p className="text-xs text-gray-600">Premium Member</p>
                 </div>
 

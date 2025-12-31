@@ -27,7 +27,7 @@ try{
     // email:data.user.email
   };
 
-  console.log(data.user.id);
+  // console.log(data.user.id);
 // try{  
 // req.user = {
 //     id: 

@@ -1,42 +1,29 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import { Send } from 'lucide-react'
-import { createNewSession } from '@/api/chatApi'
-/**
- * ChatPage Component
- * 
- * Chat interface matching MindAI design system
- * Uses existing color palette: #d4ad98 (primary), #f7f3ee (background)
- * Matches design patterns from /ui layout
- */
+import { createNewSession,sendMessage } from '@/api/chatApi'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase/client'
+
+
 export default function ChatPage() {
   // Sample messages for demonstration
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm here to provide compassionate support. How are you feeling today?",
+      content: "Hello! I'm here to provide compassionate support. How are you feeling today?",
       sender: 'ai',
-    //   timestamp: new Date(Date.now() - 300000)
+
     },
-    // {
-    //   id: 2,
-    //   text: "Hi, I've been feeling a bit overwhelmed lately with work and personal stuff.",
-    //   sender: 'user',
-    // //   timestamp: new Date(Date.now() - 240000)
-    // },
-    // {
-    //   id: 3,
-    //   text: "I understand. It's completely normal to feel overwhelmed sometimes. Would you like to talk about what's been weighing on your mind?",
-    //   sender: 'ai',
-    // //   timestamp: new Date(Date.now() - 180000)
-    // }
+   
   ])
 
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
   const[sessionid,setSessionId]=useState('');
-
+  const [isLoading, setIsLoading] = useState(true);
+   const router = useRouter()
   // Auto-scroll to latest message
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -44,50 +31,70 @@ export default function ChatPage() {
 
 useEffect(()=>{
   // const {data}=await createNewSession();
+
   const starChat=async()=>{
+ try{
+  
+  const { data: { session } } = await supabase.auth.getSession()
+      
+  if (!session) {
+        console.log("No session found, redirecting to login")
+        router.push('/auth/login')
+        return
+      }
     const {data,error}=await createNewSession();
     if(error){
-     return console.log("error in sessionCreation")
+     return console.log("error in sessionCreation",error)
     }
-    console.log(data.sessionid);
-    setSessionId(data.sessionid)
+    console.log(data.sessionId);
+    setSessionId(data.sessionId)
   }
+  catch (error) {
+      console.error("Error in starChat:", error)
+      router.push('/auth/login')
+    }
 
+ }
+ 
   starChat();
-})
+},[router])
 
   useEffect(() => {
     scrollToBottom()
   }, [messages])
 
   // Handle sending message
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async(e) => {
     e?.preventDefault()
     
     if (inputValue.trim() === '') return
 
-    const newMessage = {
-      // id: messages.length + 1,
-      messages: inputValue,
-      sessionid
-      // sender: 'user',
-      // timestamp: new Date()
-    }
+  const userMessage = {
+    id: crypto.randomUUID(),
+    sender: "user",
+    content: inputValue,
+  };
 
-    setMessages([...messages, newMessage])
+  // 2️⃣ Show user message immediately
+  setMessages((prev) => [...prev, userMessage]);
+  //  const currentInput = inputValue; 
+  setInputValue("");
+
+try{
+   const res = await sendMessage(inputValue,sessionid) 
+    const assistantMessage = {
+      id: crypto.randomUUID(),
+      sender: "ai",
+      content: res.reply,
+    };
+      setMessages((prev) => [...prev, assistantMessage]);
     setInputValue('')
+}
+catch(err){
+  res.json("assistant msg problem");
+}
+}
 
-    // Simulate AI response after a short delay
-    // setTimeout(() => {
-    //   const aiResponse = {
-    //     id: messages.length + 2,
-    //     text: "Thank you for sharing that with me. I'm here to help you work through these feelings.",
-    //     sender: 'ai',
-    //     timestamp: new Date()
-    //   }
-    //   setMessages(prev => [...prev, aiResponse])
-    // }, 1000)
-  }
 
   // Handle Enter key
   const handleKeyDown = (e) => {
@@ -97,14 +104,7 @@ useEffect(()=>{
     }
   }
 
-  // Format timestamp
-//   const formatTime = (date) => {
-//     return date.toLocaleTimeString('en-US', { 
-//       hour: 'numeric', 
-//       minute: '2-digit',
-//       hour12: true 
-//     })
-//   }
+
 
   return (
     <div className="flex flex-col h-[calc(100vh-9rem)] -m-6 sm:-m-8">
@@ -125,7 +125,7 @@ useEffect(()=>{
               } rounded-2xl px-4 py-3 shadow-sm`}
             >
               <p className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap wrap-break-word">
-                {message.text}
+                {message.content}
               </p>
               <span
                 className={`text-xs mt-1 block ${
@@ -173,4 +173,5 @@ useEffect(()=>{
       </div>
     </div>
   )
+
 }

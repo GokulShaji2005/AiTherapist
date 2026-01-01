@@ -1,6 +1,6 @@
 import { Groq } from 'groq-sdk';
 import { therapistSystemPrompt } from '../prompts/therapistSytsem.js';
-
+import { endSession } from '../prompts/endSession.js';
 
 if (!process.env.GROQ_API_KEY) {
   throw new Error("❌ GROQ_API_KEY is missing")
@@ -45,3 +45,32 @@ return fullResponse
     }
     }
   
+export const generateSessionInsights= async (compressedTest) => {
+  try {
+    const response = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.4, // lower = more stable JSON
+      max_completion_tokens: 500,
+      stream: false, // IMPORTANT
+      messages: [
+        {
+          role: "system",
+          content: endSession
+        },
+        {
+          role: "user",
+          content: JSON.stringify(compressedTest, null, 2)
+        }
+      ]
+    });
+
+    const raw = response.choices[0].message.content;
+
+    // Always validate JSON
+    return JSON.parse(raw);
+
+  } catch (err) {
+    console.error("End session LLM error:", err);
+    throw err;
+  }
+};

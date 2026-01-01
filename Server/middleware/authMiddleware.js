@@ -11,7 +11,7 @@ try{
     }
 //   const token=authHeader.replace("Bearer","");
   const token = authHeader.split(" ")[1]; 
-
+ console.log(token);
   const {data,error}=await supabaseAdmin.auth.getUser(token);
 
   if(error || !data.user){

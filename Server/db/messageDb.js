@@ -50,6 +50,6 @@ export const userWiseMsg=async(req,res)=>{
     })
  }
  catch(error){
-    console.log("db is not connecting for session",err);
+    console.log("db is not connecting for session",error);
  }
 }

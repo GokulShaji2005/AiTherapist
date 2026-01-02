@@ -35,9 +35,13 @@ export async function endSession(req, res) {
       sessionId
     );
 
-    if (userMessages.length === 0) {
-      return res.status(400).json({ error: "No messages found" });
-    }
+    // if (userMessages.length === 0) {
+    //   return res.status(400).json({ error: "No messages found" });
+    // }
+
+    if (!userMessages || userMessages.length === 0){
+  console.warn("Ending session with no messages:", sessionId);
+}
 
     // 2️⃣ Compress
     const compressedText = compressUserMessages(userMessages);
@@ -63,6 +67,8 @@ export async function endSession(req, res) {
       success: true,
       insights
     });
+
+
 
   } catch (err) {
     console.error(err);

@@ -5,5 +5,5 @@ import { endSession } from "../services/sessionData.js";
 const dbRouter=Router();
 dbRouter.post('/sessionWiseMsg',sessionWiseMsg);
 dbRouter.post('/userWiseMsg',userWiseMsg);
-dbRouter.post('/endSessions',endSession);
+dbRouter.post('/endSession',endSession);
 export default dbRouter

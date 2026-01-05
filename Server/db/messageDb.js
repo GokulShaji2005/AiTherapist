@@ -53,3 +53,28 @@ export const userWiseMsg=async(req,res)=>{
     console.log("db is not connecting for session",error);
  }
 }
+
+export const summary=async(req,res)=>{
+    try{
+   //   const  userid=req.user.id;
+     const {sessionId}=req.body
+
+     const {data,error} = await supabaseAdmin
+     .from("chat_sessions")
+     .select("title,summary,coping_steps")
+     .eq("id",sessionId)
+     .order("created_at",{ascending:true})
+   
+
+    if(error){
+        console.log("Error in fetching session:",error);
+    }
+    res.json({
+       messages:data
+    })
+ }
+ catch(error){
+    console.log("db is not connecting for session",error);
+ }
+}
+

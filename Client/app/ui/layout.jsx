@@ -31,6 +31,7 @@ import Link from 'next/link';
 
 export default function AppLayout({ children }) {
   const [user,setUser]=useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
  
 //  useEffect(() => {
@@ -168,9 +169,11 @@ const handleClickSessions=()=>{
       </aside>
 
       {/* Mobile Slide-over Sidebar Overlay (Visual Only) */}
-      <div className="lg:hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 hidden">
+      <div className={`lg:hidden fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+           onClick={() => setIsMobileMenuOpen(false)}>
         {/* Sidebar Drawer */}
-        <aside className="fixed inset-y-0 left-0 w-64 bg-white shadow-2xl z-50">
+        <aside className={`fixed inset-y-0 left-0 w-64 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+               onClick={(e) => e.stopPropagation()}>
           <div className="flex flex-col h-full">
             {/* Mobile Sidebar Header */}
             <div className="flex items-center justify-between px-6 py-6 border-b border-gray-200">
@@ -198,7 +201,9 @@ const handleClickSessions=()=>{
                 </div>
               </div>
               {/* Close button visual */}
-              <button className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -210,6 +215,7 @@ const handleClickSessions=()=>{
               {/* Chat - Active */}
               <Link
                 href="/ui/chat"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium ${
                   pathname === '/ui/chat'
                     ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold'
@@ -223,6 +229,7 @@ const handleClickSessions=()=>{
               {/* Sessions */}
               <Link
                 href="/ui/sessions"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium ${
                   pathname.startsWith('/ui/sessions')
                     ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold'
@@ -236,6 +243,7 @@ const handleClickSessions=()=>{
               {/* Critical */}
               <a
                 href="#"
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] font-medium"
               >
                 <AlertCircle className="w-5 h-5" strokeWidth={2} />
@@ -243,14 +251,30 @@ const handleClickSessions=()=>{
               </a>
 
               {/* Solutions */}
-              <a
-                href="#"
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] font-medium"
+              <Link
+                href="/ui/summary"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium ${
+                  pathname.startsWith('/ui/summary')
+                    ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold'
+                    : 'text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98]'
+                }`}
               >
                 <Lightbulb className="w-5 h-5" strokeWidth={2} />
                 <span>Solutions</span>
-              </a>
+              </Link>
             </nav>
+            
+            {/* Mobile Logout Button */}
+            <div className="px-4 py-4 border-t border-gray-200">
+              <button
+                onClick={signOut}
+                className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] transition-all duration-300 font-medium"
+              >
+                <Calendar className="w-5 h-5" strokeWidth={2} />
+                <span>Logout</span>
+              </button>
+            </div>
           </div>
         </aside>
       </div>
@@ -262,7 +286,9 @@ const handleClickSessions=()=>{
           <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
             {/* Left: Mobile Hamburger Menu */}
             <div className="flex items-center gap-4">
-              <button className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+              <button 
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                 <Menu className="w-6 h-6" strokeWidth={2} />
               </button>
               

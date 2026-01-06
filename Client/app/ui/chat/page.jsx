@@ -157,7 +157,7 @@ const handleEndSession = async () => {
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-gray-200 bg-white/50 backdrop-blur-sm px-6 sm:px-8 py-4">
+      <div className="border-t border-gray-200 bg-white/50 backdrop-blur-sm px-3 sm:px-8 py-4">
         <form onSubmit={handleSendMessage} className="flex gap-2 sm:gap-3">
           <input
             ref={inputRef}
@@ -181,7 +181,7 @@ const handleEndSession = async () => {
             }`}
           >
             <span className="hidden sm:inline">Send</span>
-            <Send className="w-5 h-5" strokeWidth={2} />
+            <Send className="w-4 h-4" strokeWidth={2} />
           </button>
             <button
             type="button"
@@ -190,9 +190,10 @@ const handleEndSession = async () => {
             className="px-3 sm:px-4 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center shadow-md border border-red-300 text-red-600 bg-white hover:bg-red-50 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
              onClick={handleEndSession} >
             {/* Icon only on mobile, icon + text on larger screens */}
-            <span className="sm:hidden flex items-center justify-center">
-              <XCircle className="w-5 h-5" />
-            </span>
+            {/* <span className="sm:hidden flex items-center justify-center">
+           
+            </span> */}
+               <XCircle className="w-3 h-3" />
             <span className="hidden sm:inline-flex items-center gap-2">
               <XCircle className="w-4 h-4" />
               <span>End Session</span>

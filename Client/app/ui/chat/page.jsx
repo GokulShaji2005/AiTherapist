@@ -190,10 +190,10 @@ const handleEndSession = async () => {
             className="px-3 sm:px-4 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center shadow-md border border-red-300 text-red-600 bg-white hover:bg-red-50 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
              onClick={handleEndSession} >
             {/* Icon only on mobile, icon + text on larger screens */}
-            {/* <span className="sm:hidden flex items-center justify-center">
-           
-            </span> */}
-               <XCircle className="w-3 h-3" />
+            <span className="sm:hidden flex items-center justify-center">
+                  <XCircle className="w-3 h-3" /> 
+            </span>
+        
             <span className="hidden sm:inline-flex items-center gap-2">
               <XCircle className="w-4 h-4" />
               <span>End Session</span>

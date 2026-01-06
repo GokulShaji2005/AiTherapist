@@ -9,7 +9,8 @@ import {
   ChevronDown,
   Brain,
 } from 'lucide-react';
-import signOut from '@/lib/auth/signOut';
+// import useSi from '@/lib/auth/signOut';
+import signOut, { useSignOut } from '@/lib/auth/signOut';
 import { supabase } from '@/lib/supabase/client';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';

@@ -14,3 +14,9 @@ export const sendMessage= async(message,sessionid)=>{
      console.log('sendMessage response data:', res.data);
   return res.data;
 }
+
+export const endSession=async(sessionId)=>{
+    return await api.post("/db/endSession",{
+        sessionId
+    });
+}

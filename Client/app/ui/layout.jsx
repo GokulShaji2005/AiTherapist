@@ -11,6 +11,9 @@ import {
 } from 'lucide-react';
 import signOut from '@/lib/auth/signOut';
 import { supabase } from '@/lib/supabase/client';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
+
 // import { setAuthToken } from '@/lib/api';
 /**
  * AppLayout Component
@@ -27,6 +30,8 @@ import { supabase } from '@/lib/supabase/client';
 
 export default function AppLayout({ children }) {
   const [user,setUser]=useState(null);
+  const pathname = usePathname();
+ 
 //  useEffect(() => {
 //     supabase.auth.getSession().then(({ data }) => {
 //       setAuthToken(data.session?.access_token);
@@ -52,7 +57,11 @@ useEffect(()=>{
 
     return () => listener.subscription.unsubscribe();
 },[]);
+  const router=useRouter();
+const handleClickSessions=()=>{
 
+  router.push('/ui/sessions');
+}
 
   return (
     <div className="min-h-screen bg-[#f7f3ee] overflow-hidden relative">
@@ -92,40 +101,52 @@ useEffect(()=>{
           {/* Navigation Menu */}
           <nav className="flex-1 px-4 py-4 space-y-1">
             {/* Chat - Active State */}
-            <a
-              href="#"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold transition-all duration-300 shadow-sm"
+            <Link
+              href="/ui/chat"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+                pathname === '/ui/chat'
+                  ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold shadow-sm'
+                  : 'text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98]'
+              }`}
             >
               <MessageCircle className="w-5 h-5" strokeWidth={2} />
-              <span>Chat</span>
-            </a>
+              <span>New Chat</span>
+            </Link>
 
             {/* Sessions */}
-            <a
-              href="#"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] transition-all duration-300 font-medium"
+            <Link
+              href="/ui/sessions"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+                pathname.startsWith('/ui/sessions')
+                  ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold shadow-sm'
+                  : 'text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98]'
+              }`}
             >
               <Calendar className="w-5 h-5" strokeWidth={2} />
               <span>Sessions</span>
-            </a>
+            </Link>
 
             {/* Critical */}
-            <a
+            {/* <a
               href="#"
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] transition-all duration-300 font-medium"
             >
               <AlertCircle className="w-5 h-5" strokeWidth={2} />
               <span>Critical</span>
-            </a>
+            </a> */}
 
             {/* Solutions */}
-            <a
-              href="#"
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] transition-all duration-300 font-medium"
+            <Link
+              href="/ui/summary"
+             className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+                pathname.startsWith('/ui/summary')
+                  ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold shadow-sm'
+                  : 'text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98]'
+              }`}
             >
               <Lightbulb className="w-5 h-5" strokeWidth={2} />
               <span>Solutions</span>
-            </a>
+            </Link>
           </nav>
 
           {/* Sidebar Footer - Optional */}
@@ -133,13 +154,13 @@ useEffect(()=>{
             <div className="flex items-center gap-2 px-4 py-2">
               {/* <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /> */}
               {/* <span>All systems operational</span> */}
-                  <a
-              href="#"
+                <button
+       
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] transition-all duration-300 font-medium"
             >
               <Calendar className="w-5 h-5" strokeWidth={2} />
               <span onClick={signOut}>Logout</span>
-            </a>
+            </button>
             </div>
           </div>
         {/* </div> */}
@@ -186,22 +207,30 @@ useEffect(()=>{
             {/* Mobile Navigation */}
             <nav className="flex-1 px-4 py-6 space-y-2">
               {/* Chat - Active */}
-              <a
-                href="#"
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold"
+              <Link
+                href="/ui/chat"
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium ${
+                  pathname === '/ui/chat'
+                    ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold'
+                    : 'text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98]'
+                }`}
               >
                 <MessageCircle className="w-5 h-5" strokeWidth={2} />
                 <span>Chat</span>
-              </a>
+              </Link>
 
               {/* Sessions */}
-              <a
-                href="#"
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98] font-medium"
+              <Link
+                href="/ui/sessions"
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium ${
+                  pathname.startsWith('/ui/sessions')
+                    ? 'bg-[#d4ad98]/10 border border-[#d4ad98]/30 text-[#d4ad98] font-semibold'
+                    : 'text-gray-700 hover:bg-[#d4ad98]/5 hover:text-[#d4ad98]'
+                }`}
               >
                 <Calendar className="w-5 h-5" strokeWidth={2} />
                 <span>Sessions</span>
-              </a>
+              </Link>
 
               {/* Critical */}
               <a

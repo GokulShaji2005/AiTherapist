@@ -4,7 +4,7 @@ import { supabase } from "./supabase/client";
 
 const backend=process.env.NEXT_PUBLIC_BACKEND;
 export const api = axios.create({
-  baseURL: `${backend}/api`,
+  baseURL: `/api`,
   headers: {
     "Content-Type": "application/json",
   },

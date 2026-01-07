@@ -9,7 +9,7 @@ const HeroSection = () => {
     <div className="min-h-screen bg-[#f7f3ee] overflow-hidden">
       {/* Curved Navbar */}
       <nav className="relative z-50 mx-auto mt-6 max-w-6xl px-4">
-        <div className="bg-[#d4ad98] rounded-[32px] shadow-lg shadow-black/10 px-8 py-4 flex items-center justify-between backdrop-blur-sm">
+        <div className="bg-[#d4ad98] rounded-4xl shadow-lg shadow-black/10 px-8 py-4 flex items-center justify-between backdrop-blur-sm">
           {/* Logo */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center shadow-sm">
@@ -79,9 +79,9 @@ const HeroSection = () => {
       <div className="relative md:pt-8 pt-18 pb-32 px-4">
         <div className="max-w-6xl mx-auto">
           {/* Decorative Blob Shapes */}
-          <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
-          <div className="absolute bottom-40 left-10 w-96 h-96 bg-gradient-to-tr from-[#f0dfd4]/30 to-[#d4ad98]/20 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
-          <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-bl from-[#e8c8b5]/15 to-transparent rounded-full blur-2xl" />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-linear-to from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
+          <div className="absolute bottom-40 left-10 w-96 h-96 bg-linear-to from-[#f0dfd4]/30 to-[#d4ad98]/20 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
+          <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-linear-to from-[#e8c8b5]/15 to-transparent rounded-full blur-2xl" />
 
           <div className="relative grid md:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
@@ -109,7 +109,8 @@ const HeroSection = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-600">
-                <button className="bg-[#d4ad98] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#d4ad98]/30 hover:shadow-xl hover:shadow-[#d4ad98]/40 hover:scale-105 hover:bg-[#c99d87] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#d4ad98]/30">
+                <button className="bg-[#d4ad98] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#d4ad98]/30 hover:shadow-xl hover:shadow-[#d4ad98]/40 hover:scale-105 hover:bg-[#c99d87] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#d4ad98]/30"
+                 onClick={()=>router.push('/auth/login')} >
                   Start Therapy Session
                 </button>
                 <button className="bg-white text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 border border-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-200">

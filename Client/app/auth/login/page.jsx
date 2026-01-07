@@ -175,12 +175,12 @@ if(error)throw error;
 
                   {/* Forgot Password Link */}
                   <div className="flex justify-end">
-                    <button
+                    {/* <button
                       type="button"
                       className="text-sm text-[#d4ad98] hover:text-[#c99d87] font-medium transition-colors duration-300"
                     >
                       Forgot password?
-                    </button>
+                    </button> */}
                   </div>
 
                   {/* Login Button */}

@@ -15,7 +15,7 @@ export default function Dashboard() {
         setUser(data.user);
       }
     })
-  }, [])
+  }, [router])
 
   return <h1>{user?.email}</h1>
 }

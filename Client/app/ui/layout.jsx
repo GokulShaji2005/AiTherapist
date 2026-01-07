@@ -74,7 +74,7 @@ const handleClickSessions=()=>{
 
       {/* Desktop Sidebar - Hidden on mobile */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-60 lg:flex-col z-40">
-        <div className="flex flex-col flex-grow bg-white/90 backdrop-blur-sm border-r border-gray-200 shadow-lg">
+        <div className="flex flex-col grow bg-white/90 backdrop-blur-sm border-r border-gray-200 shadow-lg">
           {/* Sidebar Header - Brand */}
           <div className="flex items-center gap-3 px-6 py-6 border-b border-gray-200">
             <div className="flex items-center justify-center w-10 h-10 bg-[#d4ad98] rounded-full shadow-lg">

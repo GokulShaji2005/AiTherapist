@@ -95,7 +95,7 @@ const Features = () => {
               `}
             >
               {/* Icon */}
-              <div className="w-16 h-16 bg-gradient-to-br from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-2xl flex items-center justify-center mb-6 text-[#d4ad98] transform transition-transform duration-300 group-hover:scale-110">
+              <div className="w-16 h-16 bg-linear-to-br from-[#d4ad98]/20 to-[#e8c8b5]/10 rounded-2xl flex items-center justify-center mb-6 text-[#d4ad98] transform transition-transform duration-300 group-hover:scale-110">
                 {feature.icon}
               </div>
 
@@ -113,14 +113,7 @@ const Features = () => {
         </div>
 
         {/* Bottom CTA (Optional) */}
-        <div className="text-center mt-16 animate-fade-in animation-delay-800">
-          <p className="text-gray-600 mb-6 text-lg">
-            Ready to experience compassionate AI support?
-          </p>
-          <button className="bg-[#d4ad98] text-white px-10 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#d4ad98]/30 hover:shadow-xl hover:shadow-[#d4ad98]/40 hover:scale-105 hover:bg-[#c99d87] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#d4ad98]/30">
-            Begin Your Journey
-          </button>
-        </div>
+    
       </div>
     </section>
   );

@@ -7,7 +7,7 @@ import cors from "cors";
 import dbRouter from './routes/dbRoutes.js';
 
 const app = express()
-const port = 4000
+
 app.use(cors());
 
 app.use(express.json());
@@ -44,6 +44,9 @@ app.use("/api/db",authMiddleware,dbRouter);
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+const PORT = process.env.PORT || 400;
+
+
 
 await client.set("test:key", "hello", { EX: 60 });
 const value = await client.get("test:key");

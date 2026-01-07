@@ -14,33 +14,6 @@ app.use(express.json());
 app.use("/api/chat",authMiddleware,router);
 app.use("/api/db",authMiddleware,dbRouter);
 
-// const res = await fetch('http://localhost:3000/api/chat/userMessage', {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json'
-//   },
-//   body: JSON.stringify({
-//     message: 'I feel anxious today',
-//     // sessionId: 'test-session-2'
-//   })
-// });
-
-// const data = await res.json();
-// console.log(data.reply);
-// app.post("/chat",authMiddleware,async(req,res)=>{
-  
-// }
-// app.post("/chat", authMiddleware, async (req, res) => {
-//   const userId = req.user.id; // ✅ Supabase UID
-//   const { message } = req.body;
-
-//   // Example logic
-//   res.json({
-//     userId,
-//     reply: `AI response to: ${message}`,
-//   });
-// });
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
@@ -53,6 +26,6 @@ const value = await client.get("test:key");
 console.log(value);
 
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`Example app listening on port ${port}`)
 })
